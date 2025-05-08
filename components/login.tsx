@@ -111,7 +111,7 @@ export default function Login() {
                             <div className="relative">
                                 <Input
                                     name="password"
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'} 
                                     className="input"
                                     placeholder="Enter your password"
                                     value={formInput.password}
