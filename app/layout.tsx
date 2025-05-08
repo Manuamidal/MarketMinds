@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { cookies } from "next/headers";
+import LogSign from "./Autentication/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,18 +28,22 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies()
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
+  const session=cookieStore.get("session")?.value;
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {!session?
+        <LogSign/>:
         <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar />
-      
           <main className="m-5 border-3 w-screen">
             {children}
           </main>
         </SidebarProvider>
+        }
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings, ChartNoAxesCombined, Target, FileText } from "lucide-react"
+import { Calendar, Home, Inbox, Search, Settings, ChartNoAxesCombined, Target, FileText, LogOut } from "lucide-react"
 
 import {
     Sidebar,
@@ -61,7 +61,7 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-
+            <LogOut/>
             </SidebarFooter>
         </Sidebar>
     )
