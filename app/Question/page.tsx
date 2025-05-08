@@ -161,7 +161,7 @@ export default function Question() {
            </div>
            </div>
              <Button type="submit" className="w-full" value="submit">   
-             Submit
+             Sub
              </Button>
               </form>
               <div className="relative">
