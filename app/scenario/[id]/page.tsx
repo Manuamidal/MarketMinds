@@ -3,8 +3,9 @@ import { notFound } from "next/navigation"
 import { getScenarioById } from "@/lib/scenario-data"
 import ScenarioComponent from "@/components/scenario/scenario-component"
 
-export default function ScenarioPage({ params }: { params: { id: string } }) {
-  const scenario = getScenarioById(params.id)
+export default async function ScenarioPage({ params }: { params: { id: string } }) {
+  const {id}=await params;
+    const scenario = getScenarioById(id)
 
   if (!scenario) {
     notFound()
