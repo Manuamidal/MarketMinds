@@ -136,7 +136,7 @@ export default function Login() {
         <div className="relative">
        <Input
             name="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'} 
             className="input"
              placeholder="Enter your password"
             value={formInput.password}
@@ -158,7 +158,7 @@ export default function Login() {
         <div className="relative">
        <Input
             name="confirmPassword"
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'} 
             className="input"
              placeholder="Enter your password"
             value={formInput.confirmPassword}
@@ -170,7 +170,7 @@ export default function Login() {
              onClick={() =>setShowConfirmPassword(!showConfirmPassword)}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 @text-gray-500 [hover:text-gray-700"
             >
-               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+               {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
            </button>
            <p className="text-sm text-muted-foreground">{formErrors.confirmPassword}</p>
            <p className='text-sm text-muted-foreground'>{formInput.successMsg}</p>
