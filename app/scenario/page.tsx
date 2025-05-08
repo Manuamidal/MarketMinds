@@ -1,25 +1,8 @@
-"use client"
-import Scenario from "@/components/scenario";
-import { useState } from "react";
 
-let Data=[{
-    name:"kshithij",
-    id:1
-},
-{
-    name:"purvagan",
-    id:2
-}]
+import { redirect } from "next/navigation"
+import { scenarios } from "@/lib/scenario-data"
 
-
-export default function Page(){
-    let [quesNo,setQuesNo]=useState(0);
-    return(
-        <div>
-        <Scenario name={Data[quesNo].name} id={Data[quesNo].id} />
-        <button onClick={()=>{setQuesNo(quesNo+1)}}>
-            click
-        </button>
-        </div>
-    )
+export default function ScenarioPage() {
+  // Redirect to the first scenario by default
+  redirect(`/scenario/${scenarios[0].id}`)
 }
