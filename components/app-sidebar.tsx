@@ -10,28 +10,29 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 // Menu items.
 const items = [
     {
         title: "Home",
-        url: "#",
+        url: "/",
         icon: Home,
     },
     {
         title: "Simulation",
-        url: "#",
+        url: "/simulation",
         icon: ChartNoAxesCombined,
     },
     {
         title: "Challenges",
-        url: "#",
+        url: "/challenges",
         icon: Target,
     },
     {
         title: "Feedback",
-        url: "#",
+        url: "/feedback",
         icon: FileText,
     },
 ]
@@ -41,9 +42,10 @@ export function AppSidebar() {
         <Sidebar collapsible="icon">
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
                     <SidebarGroupContent>
                         <SidebarMenu>
+                        <SidebarTrigger />
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
