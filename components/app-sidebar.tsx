@@ -59,7 +59,7 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                
+
             </SidebarFooter>
         </Sidebar>
     )
