@@ -9,6 +9,9 @@ import { Eye, EyeOff, Mail, Github } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import Signup from '@/components/Signup';
+import { login } from '@/libs';
+import { redirect } from 'next/navigation';
+import check from '@/lib/handelLogin';
 
 export default function Login() {
     const [formInput, setFormInput] = useState({
@@ -72,10 +75,9 @@ export default function Login() {
             return;
         }
         setFormErrors(inputError);
-        setFormInput((prevState) => ({
-            ...prevState,
-            successMsg: 'Login successful',
-        }));
+        console.log(formInput);
+        check(formInput);
+  
     }
 
     return (
