@@ -141,6 +141,102 @@ export interface DataPoint {
       explanation:
         "A rapid price decline often indicates panic selling, typically triggered by negative news or market sentiment.",
     },
+        {
+      id: "volatile-swings",
+      title: "Volatile Swings",
+      description: "The stock shows big daily ups and downs.",
+      chartData: [
+            { day: 1, price: 100 },
+            { day: 2, price: 105 },
+            { day: 3, price: 98 },
+            { day: 4, price: 110 },
+            { day: 5, price: 102 },
+            { day: 6, price: 108 },
+            { day: 7, price: 95 },
+            { day: 8, price: 99 },
+            { day: 9, price: 101 },
+            { day: 10, price: 104 },
+            { day: 11, price: 96 },
+            { day: 12, price: 107 },
+            { day: 13, price: 97 },
+            { day: 14, price: 109 },
+            { day: 15, price: 103 },
+      ],
+      question: "What does this suggest?",
+      options: [
+        {
+          id: "a",
+          text: "The stock is being regulated",
+          isCorrect: false,
+        },
+        {
+          id: "b",
+          text: "Long-term stability",
+          isCorrect: false,
+        },
+        {
+          id: "c",
+          text: "High volatility, possible uncertainty in the market",
+          isCorrect: true,
+        },
+        {
+          id: "d",
+          text: "Interest rates dropped",
+          isCorrect: false,
+        },
+      ],
+      correctAnswer: "c",
+      explanation:
+        "Sharp fluctuations usually indicate high volatility and market uncertainty.",
+    },
+            {
+      id: "breakout",
+      title: "Breakout After Consolidation",
+      description: "Price breaks out after being stuck in a range.",
+      chartData: [
+          { day: 1, price: 50 },
+          { day: 2, price: 49.5 },
+          { day: 3, price: 50.2 },
+          { day: 4, price: 50 },
+          { day: 5, price: 49.8 },
+          { day: 6, price: 50.1 },
+          { day: 7, price: 50.2 },
+          { day: 8, price: 49.9 },
+          { day: 9, price: 50 },
+          { day: 10, price: 50.1 },  
+          { day: 11, price: 52 },
+          { day: 12, price: 53 },
+          { day: 13, price: 52.9 },
+          { day: 14, price: 53.5 },
+          { day: 15, price: 53.59 },
+      ],
+      question: " What does this signal?",
+      options: [
+        {
+          id: "a",
+          text: " A scam is happening",
+          isCorrect: false,
+        },
+        {
+          id: "b",
+          text: "Flat price movement",
+          isCorrect: false,
+        },
+        {
+          id: "c",
+          text: "Sudden crash ahead",
+          isCorrect: false,
+        },
+        {
+          id: "d",
+          text: "A breakout potential start of a new trend ",
+          isCorrect: true,
+        },
+      ],
+      correctAnswer: "d",
+      explanation:
+        "When price breaks a resistance after consolidation, it often begins a new trend.",
+    },
   ]
   
   export function getScenarioById(id: string): Scenario | undefined {
