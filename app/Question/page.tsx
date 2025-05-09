@@ -9,20 +9,37 @@ import {Eye, EyeOff,Mail,Github} from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import { pre } from 'framer-motion/client';
+import { cn } from "@/lib/utils"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
+  import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { CalendarIcon } from "lucide-react"
+import { format, setDate } from 'date-fns';
 
 export default function Question() {
+    const [date, setDate] = React.useState<Date>();
     const[formInput, setFormInput] = useState({
-        username:"",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        successMsg: "",
+        age:"",
+        experience:"",
+        income:"",
+        successMsg:"",
     });
     const[formErrors, setFormErrors] = useState({
-        username:"",
-        email: "",
-        password: "",
-        confirmPassword: "",
+        age:"",
+        experience:"",
+        income:""
     });
     const handleUserInput=(name: string,value: string) => {
         setFormInput({
@@ -34,57 +51,33 @@ export default function Question() {
         event.preventDefault();
 
         let inputError = {
-            username:"",
-            email: "",
-            password: "",
-            confirmPassword: "",
+            age:"",
+            experience:"",
+            income:"",
         };
+        if(!formInput.age) {
+          setFormErrors({
+              ...inputError,
+              age: 'age is required',
+          });
+          return;
+      }
+      if(!formInput.experience) {
 
-        if(!formInput.email && !formInput.password) {   
-            setFormErrors({
-                ...inputError,
-                email: 'Email is required',
-                password: 'Password is required',
-            });
-            return;
-        }
-        if(!formInput.email) {
-            setFormErrors({
-                ...inputError,
-                email: 'Email is required',
-            });
-            return;
-        }
-        if(formInput.password !== formInput.confirmPassword) {
-            setFormErrors({
-                ...inputError,
-                password: 'Password does not match',
-                confirmPassword: 'Password does not match',
-            });
-            return;
-        }
-        if(!formInput.password) {
-            setFormErrors({
-                ...inputError,
-                password: 'Password is required',
-            });
-            return;
-        }
-        if(formInput.password.length < 6) {
-            setFormErrors({
-                ...inputError,
-                password: 'Password must be at least 6 characters long',
-            });
-            return;
-        }
-        if(!/\S+@\S+\.\S+/.test(formInput.email)) {
-            setFormErrors({
-                ...inputError,
-                email: 'Email is invalid',
-            });
-            return;
-        }
-        setFormErrors(inputError);
+        setFormErrors({
+            ...inputError,
+            experience: 'Experience is required',
+        });
+        return;
+    }
+    if(!formInput.income) {
+      setFormErrors({
+          ...inputError,
+          income: 'Income is required',
+      });
+      return;
+  }
+  setFormErrors(inputError);
         setFormInput((prevState) => ({
             ...prevState,
              successMsg: 'Signup successful',
@@ -100,68 +93,98 @@ export default function Question() {
         className="w-full max-w-nd"
        >
         <div className="bg-white rounded-2xl shadow-xl p-5 space-y-6">
-        <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold tracking-tighter">Sign up</h1>
-        <p className="text-muted-foreground">Enter your credentials</p>
+        <div className=" space-y-2">
+        <h1 className="text-3xl font-bold tracking-tighter">Question</h1>
         </div>
         <form className="space-y-4" onSubmit={validateFormInput}>
         <div className="space-y-2">
-        <Label htmlFor="username">Username</Label>
+        <Label htmlFor="age">Age</Label>
         <Input
-        name="username"
+        name="age"
         type="text"
         className="input"
-        placeholder="Enter your name"
-        value={formInput.username}
+        placeholder="Enter your age"
+        value={formInput.age}
         onChange={({target})=>{ handleUserInput(target.name,target.value)}}
         required />
-        <p className="text-sm text-muted-foreground">{formErrors.username}</p>
+        <p className="text-sm text-muted-foreground">{formErrors.age}</p>
         </div>
         <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-        name="email"
-        type="text"
-        className="input"
-        placeholder="Enter your email"
-        value={formInput.email}
-        onChange={({target})=>{ handleUserInput(target.name,target.value)}}
-        required />
-        <p className="text-sm text-muted-foreground">{formErrors.email}</p>
+        <Label htmlFor="gender">Gender</Label>
+        <Select >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Gender" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Gender</SelectLabel>
+          <SelectItem value="Male">Male</SelectItem>
+          <SelectItem value="Female">Female</SelectItem>
+          <SelectItem value="Others">Others</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
         </div>
         <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <div className="relative">
-       <Input
-            name="password"
-            type="password"
-            className="input"
-             placeholder="Enter your password"
-            value={formInput.password}
-            onChange={({target})=>{handleUserInput(target.name,target.value)}}
-            required
-            />
-           <p className="text-sm text-muted-foreground">{formErrors.password}</p>
-           </div>
-           </div>
+        <Label htmlFor="DOB">DOB</Label>
+        <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-[240px] justify-start text-left font-normal",
+            !Date && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon />
+          {date ? format(date, "PPP") : <span>Pick a date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+    <div className="space-y-2">
+        <Label htmlFor="experience">Experience</Label>
+        <Select  onValueChange={(value) => handleUserInput("experience", value)} >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Experience" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Experience</SelectLabel>
+          <SelectItem value="Beginer">Beginer</SelectItem>
+          <SelectItem value="Intermediate">Intermediate</SelectItem>
+          <SelectItem value="Expert">Expert</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+    <p className="text-sm text-muted-foreground">{formErrors.experience}</p>
+    </div>        
+        </div>
            <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <Label htmlFor="income">Income</Label>
         <div className="relative">
        <Input
-            name="confirmPassword"
-            type="password"
+            name="income"
+            type="text"
             className="input"
              placeholder="Enter your password"
-            value={formInput.confirmPassword}
+            value={formInput.income}
             onChange={({target})=>{handleUserInput(target.name,target.value)}}
             required
             />
-           <p className="text-sm text-muted-foreground">{formErrors.confirmPassword}</p>
+           <p className="text-sm text-muted-foreground">{formErrors.income}</p>
            <p className='text-sm text-muted-foreground'>{formInput.successMsg}</p>
            </div>
            </div>
-             <Button type="submit" className="w-full" value="submit">   
-             Sub
+             <Button  type="submit" className="w-full" value="submit">   
+             Submit
              </Button>
               </form>
               <div className="relative">
