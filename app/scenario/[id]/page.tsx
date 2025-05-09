@@ -16,5 +16,5 @@ export default async function ScenarioPage({ params }: { params: { id: string } 
 
 // Generate static params for all scenarios
 export function generateStaticParams() {
-  return [{ id: "strong-uptrend" }, { id: "sideways-market" }, { id: "sudden-drop" }]
+  return [{ id: "strong-uptrend" }, { id: "sideways-market" }, { id: "sudden-drop" },{ id: "volatile-swings" },{ id: "breakout" }]
 }
