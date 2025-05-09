@@ -4,7 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { cookies } from "next/headers";
-import LogSign from "./Autentication/page";
+import LogSign from "../components/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
