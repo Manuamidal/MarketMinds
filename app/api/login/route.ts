@@ -1,4 +1,3 @@
-"use server"
 import { encrypt } from "@/libs";
 import { MongoClient } from "mongodb";
 import { cookies } from "next/headers";
@@ -9,7 +8,7 @@ interface LoginData{
     password:string
 }
 
-export async function check(formData: LoginData) {
+export async function login(formData: LoginData) {
   const client = new MongoClient("mongodb://localhost:27017/marketminds");
 
   try {
@@ -23,8 +22,7 @@ export async function check(formData: LoginData) {
     const user = await collection.findOne({ "data.email": formData.email });
 
     if (!user || user.data.password !== formData.password) {
-        console.log("error")
-      return null;
+      throw new Error("Invalid email or password");
     }
 
     // Create the session
