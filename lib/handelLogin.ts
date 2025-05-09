@@ -28,7 +28,7 @@ export async function check(formData: LoginData) {
     }
 
     // Create the session
-    const expires = new Date(Date.now() + 10 * 1000);
+    const expires = new Date(Date.now() + 10 * 100000);
     const session = await encrypt({ user: { email: formData.email }, expires });
 
     // Save the session in a cookie

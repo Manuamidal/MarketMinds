@@ -1,52 +1,70 @@
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
-
+import { TrendingUp } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
-import { useEffect, useRef, useState } from "react"
-import { News } from "./news"
-const chartData = [
-    { month: "January", price: 0 },
-]
+} from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
+import { News } from "./news";
 
-const chartConfig = {
-    desktop: {
-        label: "price",
-        color: "var(--chart-1)",
-    },
-} satisfies ChartConfig
+const chartData = [
+    { desktop: "Jan 29, 2025", Open: 130 },
+];
 
 export function LineChartR() {
     const [data, setData] = useState(chartData);
     const wsref = useRef<WebSocket | null>(null);
+    const messageCount = useRef(0); // Counter to track the number of messages
+    const [info, setInfo] = useState<any[]>([]); // Store dynamic data for News
+
     useEffect(() => {
         setTimeout(() => {
             const ws = new WebSocket(`ws://localhost:3001`);
             wsref.current = ws;
             ws.onopen = () => {
-                console.log("open");
-            }
+                console.log("WebSocket connection opened");
+            };
             ws.onmessage = (event) => {
                 const res = JSON.parse(event.data);
-                console.log(res, event.data);
-                setData([...data, res]);
-                ws.send("recived");
+                let data1 = { desktop: res.Date, Open: res.Close };
+                setData((prevData) => [...prevData, data1]); // Update chart data
+                console.log(data1);
+
+                // Update info for News
+                setInfo((prevInfo) => [
+                    ...prevInfo,
+                    {
+                        Date: res.Date,
+                        Open: res.Open,
+                        High: res.High,
+                        Low: res.Low,
+                        Close: res.Close,
+                        AdjClose: res.AdjClose,
+                        Volume: res.Volume,
+                    },
+                ]);
+
+                ws.send("received");
+
+                // Increment the message counter
+                messageCount.current += 1;
+
+                // Close the WebSocket after 20 messages
+                if (messageCount.current >= 20) {
+                    ws.close();
+                    console.log("WebSocket connection closed after 20 messages");
+                }
             };
-        }, 300)
-    });
+            ws.onclose = () => {
+                console.log("WebSocket connection closed");
+            };
+        }, 5000);
+    }, [wsref]);
+
     return (
         <Card className="flex flex-row">
             <Card className="w-200 float-left">
@@ -55,47 +73,28 @@ export function LineChartR() {
                     <CardDescription>January - June 2024</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <ChartContainer config={chartConfig}>
-                        <LineChart
-                            accessibilityLayer
-                            data={data}
-                            margin={{
-                                left: 12,
-                                right: 12,
-                            }}
-                        >
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="month"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                tickFormatter={(value) => value.slice(0, 3)}
-                            />
-                            <ChartTooltip
-                                cursor={false}
-                                content={<ChartTooltipContent hideLabel />}
-                            />
-                            <Line
-                                dataKey="price"
-                                type="linear"
-                                stroke="var(--color-desktop)"
-                                strokeWidth={2}
-                                dot={false}
-                            />
-                        </LineChart>
-                    </ChartContainer>
+                    <AreaChart
+                        width={600}
+                        height={200}
+                        data={data}
+                        margin={{
+                            left: 12,
+                            right: 12,
+                        }}
+                    >
+                        <CartesianGrid />
+                        <XAxis dataKey="desktop" />
+                        <Area
+                            dataKey="Open"
+                            type="natural"
+                            fill="var(--color-desktop)"
+                            fillOpacity={0.4}
+                            stroke="var(--color-desktop)"
+                        />
+                    </AreaChart>
                 </CardContent>
-                <CardFooter className="flex-col items-start gap-2 text-sm">
-                    <div className="flex gap-2 font-medium leading-none">
-                        Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-                    </div>
-                    <div className="leading-none text-muted-foreground">
-                        Showing total visitors for the last 6 months
-                    </div>
-                </CardFooter>
             </Card>
-            <News className="ml-4 float-right" />
+            <News className="ml-4 float-right" data={info} />
         </Card>
-    )
+    );
 }
